@@ -1,2 +1,2 @@
-defmodule Slackkit.Auth do
-end
+# defmodule Slackkit.Auth do
+# end

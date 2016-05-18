@@ -34,7 +34,7 @@ You can use the porcelain to quickly get started on your own Slack integrations:
 - `Slackkit.Bot` for building Bot users
 - `Slackkit.Hook` for building Incoming Webhooks
 - `Slackkit.Command` for building custom Slash Commands
-- `Slackkit.App` for building custom complete Slack Applications
+- `Slackkit.Application` for building complete Slack Applications
 
 Under the hood, the plumbing that works with the Slack APIs are:
 
