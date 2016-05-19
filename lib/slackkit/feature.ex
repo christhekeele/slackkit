@@ -6,7 +6,7 @@ defmodule Slackkit.Feature do
     
     defmacro __before_compile__(_) do
       quote location: :keep, bind_quoted: [features: @features] do
-        defp features, do: IO.inspect features; features
+        defp features, do: features
         features |> Enum.map( fn feature ->
           def unquote(feature)(), do: []
           defoverridable [{feature, 0}]

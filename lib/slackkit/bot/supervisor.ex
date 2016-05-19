@@ -21,12 +21,13 @@ defmodule Slackkit.Bot.Supervisor do
   end
   
   defp rtm(name, token) do
-    worker Slackkit.RTM, [name, token, manager_for(name)]
+    worker Slackkit.RTM, [token, manager_for(name)], id: name
   end
   
   defp event_monitors(name, handlers) do
     Enum.map( handlers, fn handler ->
-      worker Slackkit.Bot.Event.Monitor, [manager_for(name), handler]
+      initial = Application.get_env(:slackkit, handler) |> Keyword.get(:initial, [])
+      worker Slackkit.Bot.Event.Monitor, [manager_for(name), handler, initial]
     end )
   end
   
