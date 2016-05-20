@@ -7,7 +7,7 @@ defmodule Slackkit.RTM.Event do
     tag data
   end
 
-  @events [
+  @event_types [
     hello: [type: "hello"],
     joined_channel: [type: "message", subtype: "channel_join"],
     left_channel: [type: "message", subtype: "channel_leave"],
@@ -37,9 +37,12 @@ defmodule Slackkit.RTM.Event do
 
     bot_added: [type: "bot_added"],
     bot_changed: [type: "bot_changed"],
+    bot_message: [type: "message", subtype: "bot_message"],
+
+    message: [type: "message", text: Macro.var(:text, __MODULE__)],
   ]
 
-  @events |> Enum.map( fn {name, matching} ->
+  @event_types |> Enum.map( fn {name, matching} ->
     # struct_matching = {:%, [], [{:__aliases__, [alias: false], [__MODULE__]}, {:%{}, [], matching}]}
     # def tag(data = unquote(struct_matching)) do
     #   %{ data | :tag => unquote(name) }
@@ -55,10 +58,32 @@ defmodule Slackkit.RTM.Event do
     Map.put data, :tag, :unknown
   end
 
+  def types, do: @event_types
+
   def events do
-    Keyword.keys(@events) ++ [:unknown]
+    Keyword.keys(types) ++ [:unknown]
   end
 
-  def event_types, do: @events
+  def callbacks do
+    events |> Enum.map( fn type ->
+      type_to_callback type
+    end )
+  end
+
+  def callback_types do
+    types |> Enum.map( fn { type, matching } ->
+      { type_to_callback(type), matching }
+    end )
+  end
+
+  def event_callbacks do
+    events |> Enum.map( fn type ->
+      { type, type_to_callback(type) }
+    end )
+  end
+
+  defp type_to_callback(type) do
+    String.to_atom("handle_" <> Atom.to_string(type))
+  end
 
 end

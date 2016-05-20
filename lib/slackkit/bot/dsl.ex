@@ -5,7 +5,8 @@ defmodule Slackkit.Bot.DSL do
   defmacro __using__(_) do
     quote location: :keep, unquote: false do
 
-      import Slackkit.RTM.Client.Lookup
+      import Slackkit.RTM.Client.Lookups
+      import Slackkit.RTM.Client.Actions
 
       def init(state),                    do: Slackkit.Bot.DSL.init(state)
       # def handle_event(event, state),     do: Slackkit.Bot.DSL.handle_event(event, state)
@@ -23,25 +24,21 @@ defmodule Slackkit.Bot.DSL do
         code_change: 3,
       ]
 
-      Slackkit.RTM.Event.events |> Enum.map( fn event ->
-        func_name = String.to_atom("handle_" <> Atom.to_string(event))
+      Slackkit.RTM.Event.event_callbacks |> Enum.map( fn { event, callback } ->
         def handle_event({event = %{tag: unquote(event)}, client}, state) do
-          unquote(func_name)(event, client, state)
+          unquote(callback)(event, client, state)
         end
       end )
 
       def handle_event(event, state) do
-        IO.puts "\nGot unhandled event: #{inspect event}\n"
         {:ok, state}
       end
 
-      Slackkit.RTM.Event.events |> Enum.map( fn event ->
-        func_name = String.to_atom("handle_" <> Atom.to_string(event))
-        def unquote(func_name)(_event, _client, state) do
-          IO.puts "handled event in #{unquote(func_name)}"
+      Slackkit.RTM.Event.callbacks |> Enum.map( fn callback ->
+        def unquote(callback)(_event, _client, state) do
           { :ok, state }
         end
-        defoverridable [{func_name, 3}]
+        defoverridable [{callback, 3}]
       end )
 
     end

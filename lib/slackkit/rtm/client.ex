@@ -2,13 +2,16 @@ defmodule Slackkit.RTM.Client do
 
   defstruct [
     manager:  nil,
-    me:       nil,
+    myself:   nil,
     team:     nil,
     bots:     %{},
     channels: %{},
     groups:   %{},
     users:    %{},
     ims:      %{},
+    # Need to make these superflous, need them in actions atm
+    token:    nil,
+    socket:   nil,
   ]
 
   @behaviour Access
