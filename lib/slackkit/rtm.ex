@@ -122,8 +122,8 @@ defmodule Slackkit.RTM do
     {:ok, client}
   end
 
-  def websocket_handle({:text, data}, _connection, client) do
-    { :ok, Slackkit.RTM.Client.process(client, parse_json(data)) }
+  def websocket_handle({:text, payload}, _connection, client) do
+    { :ok, Slackkit.RTM.Client.process(client, parse_json(payload)) }
   end
 
   def websocket_info(:start, _connection, client) do

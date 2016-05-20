@@ -1,112 +1,55 @@
 defmodule Slackkit.RTM.Event do
 
-  def new(client, json) do
-    { :ok, %{ event: json, client: client } }
-    # { :ok, %{ event: new(json), client: client } }
+  def new(client, data) do
+    { :ok, data |> tag |> Map.put(:client, client) }
   end
 
-#   def new(%{type: "channel_created", channel: channel}) do
-#     track(client, :channel, channel)
-#   end
-#
-#   def new(%{type: "channel_joined", channel: channel}) do
-#     join(client, :channel, channel)
-#   end
-#
-#   def new(%{type: "message", subtype: "channel_join", channel: channel, user: user}) do
-#     joined(client, :channel, channel, user)
-#   end
-#
-#   def new(%{type: "channel_rename", channel: channel}) do
-#     rename(client, :channel, channel)
-#   end
-#
-#   def new(%{type: "channel_archive", channel: channel}) do
-#     archive(client, :channel, channel)
-#   end
-#
-#   def new(%{type: "channel_unarchive", channel: channel}) do
-#     unarchive(client, :channel, channel)
-#   end
-#
-#   def new(%{type: "message", subtype: "channel_leave", channel: channel, user: user}) do
-#     left(client, :channel, channel, user)
-#   end
-#
-#   def new(%{type: "channel_left", channel: channel}) do
-#     leave(client, :channel, channel)
-#   end
-#
-# # IMS
-#
-#   def new(%{type: "im_created", channel: im}) do
-#     track(client, :im, im)
-#   end
-#
-# # GROUPS
-#
-#   def new(%{type: "group_joined", channel: group}) do
-#     join(client, :group, group)
-#   end
-#
-#   def new(%{type: "message", subtype: "group_join", channel: group, user: user}) do
-#     joined(client, :group, group, user)
-#   end
-#
-#   def new(%{type: "group_rename", channel: group}) do
-#     rename(client, :group, group)
-#   end
-#
-#   def new(%{type: "group_archive", channel: group}) do
-#     archive(client, :group, group)
-#   end
-#
-#   def new(%{type: "group_unarchive", channel: group}) do
-#     unarchive(client, :group, group)
-#   end
-#
-#   def new(%{type: "message", subtype: "group_leave", channel: group, user: user}) do
-#     left(client, :group, group, user)
-#   end
-#
-#   def new(%{type: "group_left", channel: group}) do
-#     leave(client, :group, group)
-#   end
-#
-# # TEAM
-#
-#   def new(%{type: "team_join", user: user}) do
-#     track(client, :user, user)
-#   end
-#
-#   def new(%{type: "team_rename", name: name}) do
-#     rename(client, :team, name)
-#   end
-#
-# # USERS
-#
-#   def new(%{type: "presence_change", user: user, presence: presence}) do
-#     change(client, :user, user, presence)
-#   end
-#
-#   def new(%{type: "user_change", user: user}) do
-#     change(client, :user, user)
-#   end
-#
-# # BOTS
-#
-#   def new(%{type: "bot_added", bot: bot}) do
-#     track(client, :bot, bot)
-#   end
-#
-#   def new(%{type: "bot_changed", bot: bot}) do
-#     change(client, :bot, bot)
-#   end
-#
-# # CATCHALL
-#
-#   def new(event) do
-#     client
-#   end
+  @events [
+    hello: [type: "hello"],
+    joined_channel: [type: "message", subtype: "channel_join"],
+    left_channel: [type: "message", subtype: "channel_leave"],
+    joined_group: [type: "message", subtype: "group_join"],
+    left_group: [type: "message", subtype: "group_leave"],
+
+    channel_created: [type: "channel_created"],
+    channel_join: [type: "channel_joined"],
+    channel_rename: [type: "channel_rename"],
+    channel_archive: [type: "channel_archive"],
+    channel_unarchive: [type: "channel_unarchive"],
+    channel_leave: [type: "channel_left"],
+
+    im_created: [type: "im_created"],
+
+    group_joined: [type: "group_joined"],
+    group_rename: [type: "group_rename"],
+    group_archive: [type: "group_archive"],
+    group_unarchive: [type: "group_unarchive"],
+    group_leave: [type: "group_left"],
+
+    team_join: [type: "team_join"],
+    team_rename: [type: "team_rename"],
+
+    presence_change: [type: "presence_change"],
+    user_change: [type: "user_change"],
+
+    bot_added: [type: "bot_added"],
+    bot_changed: [type: "bot_changed"],
+  ]
+
+  @events |> Enum.map( fn {name, matching} ->
+    def tag(data = unquote({:%{}, [], matching})) do
+      Map.put data, :tag, unquote(name)
+    end
+  end)
+
+  def tag(data) do
+    Map.put data, :tag, :unknown
+  end
+
+  def events do
+    Map.keys(@events) ++ [:unknown]
+  end
+
+  def event_types, do: @events
 
 end

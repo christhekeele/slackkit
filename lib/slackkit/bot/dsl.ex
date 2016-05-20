@@ -26,8 +26,8 @@ defmodule Slackkit.Bot.DSL do
     end
   end
 
-  def handle_event(%{client: client, event: event}, state) do
-    IO.puts "\nGot event: #{inspect event}\n"
+  def handle_event(event, state) do
+    IO.puts "\nGot event: #{inspect event.tag}\n"
     {:ok, state}
   end
 

@@ -30,9 +30,9 @@ defmodule Slackkit.RTM.Client do
   def get_and_update(client, key, function)
   defdelegate get_and_update(client, key, function), to: Map
 
-  def process(client, json) do
-    case Slackkit.RTM.Client.Handler.update client, json do
-      {:ok, client} -> case Slackkit.RTM.Event.new client, json do
+  def process(client, payload) do
+    case Slackkit.RTM.Client.Handler.update client, payload do
+      {:ok, client} -> case Slackkit.RTM.Event.new client, payload do
         {:ok, event} -> case GenEvent.notify client.manager, event do
           :ok -> client
         end

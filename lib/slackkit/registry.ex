@@ -11,8 +11,6 @@ defmodule Slackkit.Registry do
         registry = unquote(registry)
         quote location: :keep do
 
-          # use GenEvent
-
           defmacro __using__([]) do
             raise ArgumentError, "#{unquote(registry)} must be registered with a name"
           end
