@@ -98,7 +98,7 @@ defmodule MySlackApp.EchoBot do
 end
 ```
 
-The Bot DSL sets up useful aliases and imports, normalizes Slack event names, adds tons of RTM targeted event handler callback functions for you, defines an all-purpose `handle_unknown` handler method, provides default callbacks, and still lets you override all the other non-`handle_event` `GenEvent` callbacks. To see the available event callbacks check out the `Slackkit.RTM.Event` docs or run `Slackkit.RTM.Event.callbacks` for a quick reference.
+The Bot DSL sets up useful aliases and imports, normalizes Slack event names, adds tons of RTM targeted event handler callback functions for you, defines an all-purpose `handle_unknown` callback, provides default callbacks, and lets you override all the other non-`handle_event` `GenEvent` callbacks. To see the available event callbacks check out the `Slackkit.RTM.Event` docs or run `Slackkit.RTM.Event.callbacks` for a quick reference.
 
 #### Slackkit.Application
 
@@ -147,19 +147,19 @@ config :slackkit, users: [
 # Configure settings for each component.
 
 config :slackkit, MySlackApp.EchoBot, [
-  # Makes EchoBot's initial state be `:state` instead of `[]`.
+  # Makes EchoBot's initial state be `:state` instead of default `[]`.
   initial: :state,
 ]
 
 # In the pipeline!
 # config :slackkit, MySlackApp.EchoCommand, [
-#   # Makes EchoCommand's initial state be `:state` instead of `[]`.
+#   # Makes EchoCommand's initial state be `:state` instead of default `[]`.
 #   initial: :state,
 #   # Registers Command under this path instead of the default `"commands"`.
 #   path: "commands/foo_bar"
 # ]
 # config :slackkit, MySlackApp.EchoHook, [
-#   # Makes EchoHook's initial state be `:state` instead of `[]`.
+#   # Makes EchoHook's initial state be `:state` instead of default `[]`.
 #   initial: :state,
 #   # Registers Hook under this path instead of the default `"hooks"`.
 #   path: "hooks/foo_bar"
