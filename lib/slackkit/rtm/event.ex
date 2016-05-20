@@ -1,7 +1,10 @@
 defmodule Slackkit.RTM.Event do
 
-  def new(client, data) do
-    { :ok, data |> tag |> Map.put(:client, client) }
+  # defstruct tag: :unknown
+
+  def new(data) do
+  # tag struct(__MODULE__, data)
+    tag data
   end
 
   @events [
@@ -37,17 +40,23 @@ defmodule Slackkit.RTM.Event do
   ]
 
   @events |> Enum.map( fn {name, matching} ->
-    def tag(data = unquote({:%{}, [], matching})) do
+    # struct_matching = {:%, [], [{:__aliases__, [alias: false], [__MODULE__]}, {:%{}, [], matching}]}
+    # def tag(data = unquote(struct_matching)) do
+    #   %{ data | :tag => unquote(name) }
+    # end
+    map_matching = {:%{}, [], matching}
+    def tag(data = unquote(map_matching)) do
       Map.put data, :tag, unquote(name)
     end
   end)
 
   def tag(data) do
+    # %{ data | :tag => :unknown }
     Map.put data, :tag, :unknown
   end
 
   def events do
-    Map.keys(@events) ++ [:unknown]
+    Keyword.keys(@events) ++ [:unknown]
   end
 
   def event_types, do: @events

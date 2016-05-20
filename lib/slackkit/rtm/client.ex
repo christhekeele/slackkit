@@ -32,8 +32,8 @@ defmodule Slackkit.RTM.Client do
 
   def process(client, payload) do
     case Slackkit.RTM.Client.Handler.update client, payload do
-      {:ok, client} -> case Slackkit.RTM.Event.new client, payload do
-        {:ok, event} -> case GenEvent.notify client.manager, event do
+      {:ok, client} -> case Slackkit.RTM.Event.new payload do
+        event -> case GenEvent.notify client.manager, {event, client} do
           :ok -> client
         end
       end
