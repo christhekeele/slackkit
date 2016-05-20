@@ -80,7 +80,8 @@ defmodule Slackkit.RTM do
           {:ok, %{error: reason, ok: false} } ->
             {:error, %Slackkit.Auth.Error{reason: reason}}
           {:ok, json} ->
-            client = %{ client(json) | manager: manager }
+            # client = %{ client(json) | manager: manager }
+            client = %{ client(json) | manager: manager, token: token }
             url = String.to_char_list(json.url)
             :websocket_client.start_link(url, __MODULE__, client)
           {:error, reason} -> {:error, %JSX.DecodeError{reason: reason, string: body}}
@@ -90,13 +91,13 @@ defmodule Slackkit.RTM do
   end
 
   defp client(json), do: %Slackkit.RTM.Client{
-    me: json.self,
+    myself: json.self,
     team: json.team,
     bots: rtm_list_to_map(json.bots),
     channels: rtm_list_to_map(json.channels),
     groups: rtm_list_to_map(json.groups),
     users: rtm_list_to_map(json.users),
-    ims: rtm_list_to_map(json.ims)
+    ims: rtm_list_to_map(json.ims),
   }
 
   defp rtm_list_to_map(list) do
@@ -105,8 +106,9 @@ defmodule Slackkit.RTM do
     end)
   end
 
-  def onconnect(_req, state) do
-    {:ok, state} # Ping time?
+  def onconnect(_req, client) do
+    # {:ok, client} # Ping time?
+    {:ok, %{ client | socket: self }}
   end
 
   def init(client) do
@@ -137,8 +139,8 @@ defmodule Slackkit.RTM do
   def websocket_terminate(_reason, _connection, _client) do
   end
 
-  def ondisconnect({:remote, :closed}, state) do
-    {:reconnect, state}
+  def ondisconnect({:remote, :closed}, client) do
+    {:reconnect, client}
   end
 
   defp parse_json(binstring) do

@@ -19,9 +19,12 @@ defmodule Slackkit.Application do
       end
 
       defp specs_for(:bots) do
-        Application.get_env(:slackkit, :bot_users) |> Enum.map( fn {name, token} ->
-          bot name, token, Keyword.get_values(bots, name)
-        end )
+        Application.get_env(:slackkit, :users) |> List.wrap |> Enum.filter(&(&1)) |> Enum.map( fn {user, token} ->
+          handlers = bots |> Keyword.get_values(user) |> List.wrap
+          unless Enum.empty?(handlers) do
+            bot user, token, handlers
+          end
+        end ) |> Enum.filter(&(&1))
       end
 
       # defp specs_for(:hooks) do
