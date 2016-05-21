@@ -85,20 +85,20 @@ defmodule MySlackApp.EchoBot do
 
   # def handle_xxx(event, client, state)
 
-  def handle_joined_channel(%{channel: channel}, client, state) do
-    type_message client, channel, "Hey there! I'm going to repeat everything you say."
+  def handle_joined_channel(%{channel: channel}, client, greeting) do
+    type_message client, channel, greeting
     {:ok, state}
   end
 
   def handle_message(%{text: message, user: user, channel: channel}, client = %{myself: myself}, state)
   when user != myself do
     type_message client, channel, message
-    {:ok, [ state | message ]}
+    {:ok, state}
   end
 end
 ```
 
-The Bot DSL sets up useful aliases and imports, normalizes Slack event names, adds tons of RTM targeted event handler callback functions for you, defines an all-purpose `handle_unknown` callback, provides default callbacks, and lets you override all the other non-`handle_event` `GenEvent` callbacks. To see the available event callbacks check out the `Slackkit.RTM.Event` docs or run `Slackkit.RTM.Event.callbacks` for a quick reference.
+The Bot DSL sets up useful aliases and imports, normalizes Slack event names, adds tons of RTM targeted event handler callback functions for you, defines an all-purpose `handle_unknown` callback, provides default callbacks, and lets you override all the normal `GenEvent` callbacks to customize it like any event handler. To see the available RTM event callbacks check out the `Slackkit.RTM.Event` docs or run `Slackkit.RTM.Event.callbacks` for a quick reference.
 
 #### Slackkit.Application
 
@@ -147,8 +147,8 @@ config :slackkit, users: [
 # Configure settings for each component.
 
 config :slackkit, MySlackApp.EchoBot, [
-  # Makes EchoBot's initial state be `:state` instead of default `[]`.
-  initial: :state,
+  # Makes EchoBot's initial state be this greeting instead of default `[]`.
+  initial: "Hey there! I'm going to repeat everything you say.",
 ]
 
 # In the pipeline!
