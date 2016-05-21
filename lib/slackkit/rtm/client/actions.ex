@@ -1,7 +1,6 @@
 defmodule Slackkit.RTM.Client.Actions do
 
-  alias Slackkit.RTM.Client.Lookups
-
+  import Slackkit.RTM.Client.Lookups
 
   @doc """
   Mimics typing `text` to `channel` for the given `client` connection. Effectively
@@ -19,24 +18,24 @@ defmodule Slackkit.RTM.Client.Actions do
   Slack understands.
   """
   def send_message(client, channel = "#" <> channel_name, text) do
-    channel_id = Lookups.lookup_channel_id(client, channel)
+    channel_id = lookup(client, :channel, :id, channel)
 
     if channel_id do
-      send_message(client, text, channel_id)
+      send_message(client, channel_id, text)
     else
       raise ArgumentError, "channel ##{channel_name} not found"
     end
   end
   def send_message(client, user = "@" <> _user_name, text) do
-    direct_message_id = Lookups.lookup_direct_message_id(client, user)
+    direct_message_id = lookup(client, :user, :im, user)
 
     if direct_message_id do
-      send_message(client, text, direct_message_id)
+      send_message(client, direct_message_id, text)
     else
       open_im_channel(
         client.token,
-        Lookups.lookup_user_id(client, user),
-        fn id -> send_message(client, text, id) end,
+        lookup(client, :user, :id, user),
+        fn id -> send_message(client, id, text) end,
         fn _reason -> :delivery_failed end
       )
     end
