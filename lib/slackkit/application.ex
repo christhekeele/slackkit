@@ -8,6 +8,7 @@ defmodule Slackkit.Application do
       @before_compile Slackkit.Feature.Functions
 
       def start(_type, opts) do
+        IO.puts "USING LOCAL"
         IO.puts "Starting #{__MODULE__} with opts: #{inspect opts}"
         specs |> Supervisor.start_link(strategy: :one_for_one, name: __MODULE__.Supervisor)
       end

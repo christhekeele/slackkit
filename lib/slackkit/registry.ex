@@ -34,7 +34,7 @@ defmodule Slackkit.Registry do
                 end
 
                 @before_compile unquote(module)
-                Module.register_attribute(__MODULE__, :bots, accumulate: true)
+                Module.register_attribute(__MODULE__, unquote(registry), accumulate: true)
               end
               Module.put_attribute(__MODULE__, unquote(registry), {unquote(name), unquote(__MODULE__)})
             end
