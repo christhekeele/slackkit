@@ -7,8 +7,8 @@ defmodule Slackkit.RTM.Event do
     tag data
   end
 
-  @event_types [
-    # Maps our event names to function clause matchers for macro generation.
+  @event_matches [
+    # Maps our event names to function clause matches for macro generation.
     # We normalize event names as such:
     #  - Most events use the past tense
     #  - Events triggered by current user activity use the active voice (verbed_noun)
@@ -67,7 +67,6 @@ defmodule Slackkit.RTM.Event do
     item_pinned: [type: "message", subtype: "pinned_item"],
     # An item was unpinned from a channel
     item_unpinned: [type: "message", subtype: "unpinned_item"],
-
     # Catch-all
     # A message was sent to a channel
     message: [type: "message"],
@@ -275,37 +274,23 @@ defmodule Slackkit.RTM.Event do
 
   ]
 
-  @event_types |> Enum.map( fn {name, matching} ->
-    # struct_matching = {:%, [], [{:__aliases__, [alias: false], [__MODULE__]}, {:%{}, [], matching}]}
-    # def tag(data = unquote(struct_matching)) do
-    #   %{ data | :tag => unquote(name) }
-    # end
-    map_matching = {:%{}, [], matching}
-    defp tag(data = unquote(map_matching)) do
+  @event_matches |> Enum.map( fn {name, match} ->
+    map_match = {:%{}, [], match}
+    defp tag(data = unquote(map_match)) do
       Map.put data, :tag, unquote(name)
     end
   end)
 
-  def types, do: @event_types
+  def matches, do: @event_matches
 
-  @events Keyword.keys(@event_types)
-  def events, do: @events
+  def types, do: unquote @event_matches |> Keyword.keys
 
-  type_to_callback = &(String.to_atom("handle_" <> Atom.to_string(&1)))
+  def callbacks, do: unquote @event_matches |> Keyword.keys |> Enum.map( fn type ->
+    String.to_atom("handle_" <> Atom.to_string(type))
+  end ) |> Macro.escape
 
-  @callbacks @events |> Enum.map( fn type ->
-    type_to_callback type
-  end )
-  def callbacks, do: @callbacks
-
-  @event_callbacks @events |> Enum.map( fn type ->
-    { type, type_to_callback(type) }
-  end )
-  def event_callbacks, do: @event_callbacks
-
-  @callback_types @event_types |> Enum.map( fn { type, matching } ->
-    { type_to_callback(type), matching }
-  end )
-  def callback_types, do: @callback_types
+  def callback_types, do: unquote @event_matches |> Keyword.keys |> Enum.map( fn type ->
+    { type, String.to_atom("handle_" <> Atom.to_string(type)) }
+  end ) |> Macro.escape
 
 end

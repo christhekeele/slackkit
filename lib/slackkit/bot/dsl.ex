@@ -15,8 +15,8 @@ defmodule Slackkit.Bot.DSL do
       def terminate(reason, state),       do: Slackkit.Bot.DSL.terminate(reason, state)
       def code_change(old, state, extra), do: Slackkit.Bot.DSL.code_change(old, state, extra)
 
-      Slackkit.RTM.Event.event_callbacks |> Enum.map( fn { event, callback } ->
-        def handle_event({event = %{tag: unquote(event)}, client}, state) do
+      Slackkit.RTM.Event.callback_types |> Enum.map( fn { type, callback } ->
+        def handle_event({event = %{tag: unquote(type)}, client}, state) do
           unquote(callback)(event, client, state)
         end
       end )
