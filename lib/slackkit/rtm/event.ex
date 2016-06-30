@@ -291,19 +291,21 @@ defmodule Slackkit.RTM.Event do
   @events Keyword.keys(@event_types)
   def events, do: @events
 
+  type_to_callback = &(String.to_atom("handle_" <> Atom.to_string(&1)))
+
   @callbacks @events |> Enum.map( fn type ->
-    String.to_atom("handle_" <> Atom.to_string(type))
+    type_to_callback type
   end )
   def callbacks, do: @callbacks
 
-  @callback_types @event_types |> Enum.map( fn { type, matching } ->
-    { String.to_atom("handle_" <> Atom.to_string(type)), matching }
-  end )
-  def callback_types, do: @callback_types
-
   @event_callbacks @events |> Enum.map( fn type ->
-    { type, String.to_atom("handle_" <> Atom.to_string(type)) }
+    { type, type_to_callback(type) }
   end )
   def event_callbacks, do: @event_callbacks
+
+  @callback_types @event_types |> Enum.map( fn { type, matching } ->
+    { type_to_callback(type), matching }
+  end )
+  def callback_types, do: @callback_types
 
 end
