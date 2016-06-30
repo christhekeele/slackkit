@@ -9,7 +9,7 @@ Installation
 1. Add `slackkit` to your list of dependencies in `mix.exs`:
 
 ```elixir
-def deps do
+defp deps do
   [slackkit: "~> 0.1"]
 end
 ```
@@ -42,7 +42,7 @@ Under the hood, the plumbing that works with the Slack APIs are:
 - `Slackkit.RTM` for leveraging Slack's Real Time Messaging API
 - `Slackkit.Auth` for navigating Slack's authentication protocols
 
-These tools are useful for when you want to something really custom, but their use is generally abstracted through the porcelain tools.
+These tools are useful for when you want to build something really custom, but their use is generally abstracted through the porcelain tools.
 
 ### Porcelain
 
