@@ -63,6 +63,29 @@ defmodule Slackkit.Web do
   use Slackkit.Web.Groups.SetTopic
   use Slackkit.Web.Groups.Unarchive
 
+  use Slackkit.Web.IM.Close
+  use Slackkit.Web.IM.History
+  use Slackkit.Web.IM.List
+  use Slackkit.Web.IM.Mark
+  use Slackkit.Web.IM.Open
+
+  use Slackkit.Web.MPIM.Close
+  use Slackkit.Web.MPIM.History
+  use Slackkit.Web.MPIM.List
+  use Slackkit.Web.MPIM.Mark
+  use Slackkit.Web.MPIM.Open
+
+  use Slackkit.Web.OAuth.Access
+
+  use Slackkit.Web.Pins.Add
+  use Slackkit.Web.Pins.List
+  use Slackkit.Web.Pins.Remove
+
+
+
+
+  use Slackkit.Web.RTM.Start
+
   use Slackkit.Web.Users.List
 
   @doc """

@@ -22,6 +22,7 @@ defmodule Slackkit.Web.Endpoint do
       alias Slackkit.MPIM
       alias Slackkit.Pagination
       alias Slackkit.Purpose
+      alias Slackkit.Team
       alias Slackkit.Topic
       alias Slackkit.User
       alias Slackkit.Profile

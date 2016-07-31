@@ -83,18 +83,18 @@ defmodule Slackkit.RTM.Client.Actions do
   end
 
   defp open_im_channel(token, user_id, on_success, on_error) do
-    im_open = HTTPoison.post(
-      "https://slack.com/api/im.open",
-      {:form, [token: token, user: user_id]}
-    )
-    case im_open do
-      {:ok, response} ->
-        case Poison.decode(response.body, keys: :atoms) do
-          {:ok, %{ok: true, channel: %{id: id}}} -> on_success.(id)
-          {:error, reason} -> on_error.({Poison.Decode, reason})
-        end
-      {:error, reason} -> on_error.({HTTPoison, reason})
-    end
+    # im_open = HTTPoison.post(
+    #   "https://slack.com/api/im.open",
+    #   {:form, [token: token, user: user_id]}
+    # )
+    # case im_open do
+    #   {:ok, response} ->
+    #     case Poison.decode(response.body, keys: :atoms) do
+    #       {:ok, %{ok: true, channel: %{id: id}}} -> on_success.(id)
+    #       {:error, reason} -> on_error.({Poison.Decode, reason})
+    #     end
+    #   {:error, reason} -> on_error.({HTTPoison, reason})
+    # end
   end
 
 end

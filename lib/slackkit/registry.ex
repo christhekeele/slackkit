@@ -3,9 +3,9 @@ defmodule Slackkit.Registry do
   defmodule Registry do
     defmacro __before_compile__(_) do
       quote do
-        def unquote(Module.get_attribute(__CALLER__.module, :registry_name))() do
-          unquote(Module.get_attribute(__CALLER__.module, Module.get_attribute(__CALLER__.module, :registry_name)))
-        end
+        # def unquote(Module.get_attribute(__CALLER__.module, :registry_name))() do
+        #   unquote(Module.get_attribute(__CALLER__.module, Module.get_attribute(__CALLER__.module, :registry_name)))
+        # end
       end
     end
   end
@@ -16,7 +16,7 @@ defmodule Slackkit.Registry do
       defmacro __using__(_) do
         name = unquote(name)
         quote do
-          @before_compile Registry
+          # @before_compile Registry
           @registry_name unquote(name)
           Module.register_attribute(__MODULE__, @registry_name, accumulate: true)
           Module.put_attribute(__MODULE__, @registry_name, unquote(__MODULE__))
