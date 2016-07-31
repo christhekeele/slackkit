@@ -8,4 +8,6 @@ defmodule Slackkit.Bot do
     :icons,
   ]
 
+  def spec, do: %__MODULE__{}
+
 end

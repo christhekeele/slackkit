@@ -1,5 +1,7 @@
 defmodule Slackkit.User do
 
+  alias Slackkit.User.Profile
+
   @derive [Poison.Encoder]
   defstruct [
     :id,
@@ -21,5 +23,7 @@ defmodule Slackkit.User do
     :two_factor_type,
     :has_files,
   ]
+
+  def spec, do: %__MODULE__{profile: Profile.spec}
 
 end

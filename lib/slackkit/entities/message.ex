@@ -23,4 +23,6 @@ defmodule Slackkit.Message do
     reactions: [],
   ]
 
+  def spec, do: %__MODULE__{}
+
 end

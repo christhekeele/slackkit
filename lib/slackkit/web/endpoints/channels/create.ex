@@ -2,6 +2,6 @@ defmodule Slackkit.Web.Channels.Create do
 
   use Slackkit.Web.Endpoint, "channels.create"
 
-  defresponse [channel: %Slackkit.Channel{}]
+  defresponse [channel: Slackkit.Channel.spec]
 
 end

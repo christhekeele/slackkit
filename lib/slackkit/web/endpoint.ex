@@ -50,7 +50,7 @@ defmodule Slackkit.Web.Endpoint do
 
       defp process(response) do
         response.body
-         |> Poison.decode!(as: __MODULE__.Response.shape)
+         |> Poison.decode!(as: __MODULE__.Response.spec)
          |> verify!
       end
 
@@ -66,8 +66,8 @@ defmodule Slackkit.Web.Endpoint do
 
       defp verify!(response), do: response
 
-      def shape, do: %{}
-      defoverridable [shape: 0]
+      def spec, do: %{}
+      defoverridable [spec: 0]
 
       defmodule SlackException do
         defexception [:message]
@@ -80,24 +80,22 @@ defmodule Slackkit.Web.Endpoint do
     end
   end
 
-  defmacro defresponse(shape) do
+  defmacro defresponse(spec \\ []) do
     quote location: :keep do
 
-      props = unquote(shape) |> Enum.map(fn
+      props = unquote(spec) |> Enum.map(fn
         ({key, value}) -> key
         (key) -> key
       end)
 
-      # values = unquote(shape) |> Enum.filter(unquote(shape), &(is_tuple(&1)))
-
-      def shape, do: %{unquote_splicing(Enum.filter(shape, &(is_tuple(&1))))}
+      def spec, do: %{unquote_splicing(Enum.filter(spec, &(is_tuple(&1))))}
 
       defmodule Response do
 
         defstruct props ++ [:ok, error: nil, warnings: ""]
 
-        def shape do
-          %__MODULE__{unquote_splicing(Enum.filter(shape, &(is_tuple(&1))))}
+        def spec do
+          %__MODULE__{unquote_splicing(Enum.filter(spec, &(is_tuple(&1))))}
         end
       end
 

@@ -12,15 +12,15 @@ defmodule Slackkit.Web do
   use Slackkit.Web.Channels.History
   use Slackkit.Web.Channels.Info
   use Slackkit.Web.Channels.Invite
-  # use Slackkit.Web.Channels.Join
-  # use Slackkit.Web.Channels.Kick
-  # use Slackkit.Web.Channels.Leave
+  use Slackkit.Web.Channels.Join
+  use Slackkit.Web.Channels.Kick
+  use Slackkit.Web.Channels.Leave
   use Slackkit.Web.Channels.List
-  # use Slackkit.Web.Channels.Mark
-  # use Slackkit.Web.Channels.Rename
-  # use Slackkit.Web.Channels.SetPurpose
-  # use Slackkit.Web.Channels.SetTopic
-  # use Slackkit.Web.Channels.Unarchive
+  use Slackkit.Web.Channels.Mark
+  use Slackkit.Web.Channels.Rename
+  use Slackkit.Web.Channels.SetPurpose
+  use Slackkit.Web.Channels.SetTopic
+  use Slackkit.Web.Channels.Unarchive
 
   use Slackkit.Web.Users.List
 

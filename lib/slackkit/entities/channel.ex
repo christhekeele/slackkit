@@ -1,5 +1,8 @@
 defmodule Slackkit.Channel do
 
+  alias Slackkit.Channel.Purpose
+  alias Slackkit.Channel.Topic
+
   @derive [Poison.Encoder]
   defstruct [
     :id,
@@ -17,5 +20,7 @@ defmodule Slackkit.Channel do
     :unread_count,
     :unread_count_display
   ]
+
+  def spec, do: %__MODULE__{purpose: Purpose.spec, topic: Topic.spec}
 
 end
