@@ -1,8 +1,8 @@
-defmodule JSX.DecodeError do
-  defexception [:reason, :string]
+defmodule Poison.DecodeError do
+  defexception [:reason, string: ""]
 
-  def message(%JSX.DecodeError{reason: reason, string: string}) do
-    "JSX could not decode string for reason: `:#{reason}`, string given:\n#{string}"
+  def message(%Poison.DecodeError{reason: reason, string: string}) do
+    "Poison could not decode string for reason: `:#{reason}`, string given:\n#{string}"
   end
 end
 
@@ -45,15 +45,15 @@ defmodule Slackkit.RTM do
     end
   end
 
-  defp format_exception(%HTTPoison.Error{reason: :connect_timeout}) do
-    "Timed out while connecting to the Slack RTM API."
-  end
+  # defp format_exception(%HTTPoison.Error{reason: :connect_timeout}) do
+  #   "Timed out while connecting to the Slack RTM API."
+  # end
+  #
+  # defp format_exception(%HTTPoison.Error{reason: :nxdomain}) do
+  #   "Could not connect to the Slack RTM API."
+  # end
 
-  defp format_exception(%HTTPoison.Error{reason: :nxdomain}) do
-    "Could not connect to the Slack RTM API."
-  end
-
-  defp format_exception(%JSX.DecodeError{string: "You are sending too many requests. Please relax."}) do
+  defp format_exception(%Poison.DecodeError{string: "You are sending too many requests. Please relax."}) do
     "Too many connection requests sent to Slack RTM at once."
   end
 
@@ -74,20 +74,21 @@ defmodule Slackkit.RTM do
   end
 
   defp link_client(token, manager) do
-    case HTTPoison.get(@url <> token) do
-      {:ok, %HTTPoison.Response{body: body}} ->
-        case JSX.decode body, [{:labels, :atom}] do
-          {:ok, %{error: reason, ok: false} } ->
-            {:error, %Slackkit.Auth.Error{reason: reason}}
-          {:ok, json} ->
-            # client = %{ client(json) | manager: manager }
-            client = %{ client(json) | manager: manager, token: token }
-            url = String.to_char_list(json.url)
-            :websocket_client.start_link(url, __MODULE__, client)
-          {:error, reason} -> {:error, %JSX.DecodeError{reason: reason, string: body}}
-        end
-      {:error, reason} -> {:error, reason}
-    end
+    # case HTTPoison.get(@url <> token) do
+    #   {:ok, %HTTPoison.Response{body: body}} ->
+    #     case Poison.decode(body, keys: :atoms) do
+    #       {:ok, %{error: reason, ok: false} } ->
+    #         {:error, %Slackkit.Auth.Error{reason: reason}}
+    #       {:ok, json} ->
+    #         # client = %{ client(json) | manager: manager }
+    #         client = %{ client(json) | manager: manager, token: token }
+    #         url = String.to_char_list(json.url)
+    #         :websocket_client.start_link(url, __MODULE__, client)
+    #       {:error, :invalid} -> {:error, %Poison.DecodeError{reason: :invalid, string: body}}
+    #       {:error, {:invalid, token}} -> {:error, %Poison.DecodeError{reason: :invalid, string: token}}
+    #     end
+    #   {:error, reason} -> {:error, reason}
+    # end
   end
 
   defp client(json), do: %Slackkit.RTM.Client{
@@ -147,7 +148,7 @@ defmodule Slackkit.RTM do
     binstring
       |> :binary.split(<<0>>)
       |> List.first
-      |> JSX.decode!([{:labels, :atom}])
+      |> Poison.decode!(keys: :atoms)
   end
 
 end

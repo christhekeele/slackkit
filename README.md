@@ -25,24 +25,33 @@ end
 Usage
 -----
 
-Slackkit has two layers: porcelain and plumbing.
+Receiving data:
 
-You can use the porcelain to quickly get started on your own Slack integrations:
+- `Slackkit.Hook` for monitoring for specific public messages with Outgoing Webhooks
+- `Slackkit.Command` for receiving to explicit user instructions via Slash Commands
 
-These should be links to tutorials.
+Sending data:
 
-- `Slackkit.Bot` for building Bot Users
-- `Slackkit.Hook` for building Outgoing Webhooks
-- `Slackkit.Command` for building custom Slash Commands
-- `Slackkit.Actions` for triggering high-level Slack events
-- `Slackkit.Application` for building complete Slack Applications
+- `Slackkit.Actions` for triggering high-level common actions within Slack
+- `Slackkit.API` for sending general instructions to slack via the Web API
+- `Slackkit.Message` for authoring simple or richly-formatted messages via Incoming Webhooks
 
-This provides all you need for full-stack Slack Application development. You can compose commands that cause bots to send messages, and webhooks that update your bot's state, all integrated without registering an actual 'application' with Slack.
+Composing messages:
+- `Slackkit.Message.Sigils` Message DSL
+- `Slackkit.Message.Builder` Message DSL
+- `Slackkit.Reference` for dealing with Channel and User representations
+- `Slackkit.Attachment` attaching payloads to Messages
+- `Slackkit.Button` for building Interactive Button workflows
+- `Slackkit.Emoji` for emoji
 
-Under the hood, the plumbing that works with the Slack APIs are:
+Interacting with data:
 
-- `Slackkit.Web` for leveraging Slack's Web API and Incoming Webhooks
-- `Slackkit.RTM` for leveraging Slack's Real Time Messaging API
-- `Slackkit.Auth` for navigating Slack's authentication protocols
+- `Slackkit.User` for taking actions on behalf of a User
+- `Slackkit.Bot` for building Bots that can notice any Slack event
+- `Slackkit.Interaction` for responding to Interactive Button input
 
-These tools are useful for when you want to build something really custom, but their use is generally abstracted through the porcelain tools.
+Utilities:
+
+- `Slackkit.Endpoint` for creating HTTP endpoints for receiving Slack data
+- `Slackkit.Socket` for establishing websocket connections with the Slack RTM API
+- `Slackkit.Auth` for performing OAuth handshakes

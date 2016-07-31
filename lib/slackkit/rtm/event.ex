@@ -7,6 +7,7 @@ defmodule Slackkit.RTM.Event do
     tag data
   end
 
+  # https://api.slack.com/events
   @event_matches [
     # Maps our event names to function clause matches for macro generation.
     # We normalize event names as such:

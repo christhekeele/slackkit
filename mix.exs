@@ -11,18 +11,27 @@ defmodule Slackkit.Mixfile do
   ]
 
   def application, do: [
-    applications: [:logger, :httpoison, :exjsx, :websocket_client],
+    applications: [
+      :logger,
+      :plug,
+      :cowboy,
+      :websocket_client,
+      :ibrowse,
+      :poison,
+    ],
     # mod: {Slackkit, []},
   ]
 
   defp deps, do: [
-    { :earmark, "~> 0.2.0", only: :dev },
+    { :earmark, "~> 0.2", only: :dev },
     { :ex_doc, "~> 0.11", only: :dev },
+    {:ibrowse, github: "cmullaparthi/ibrowse", tag: "v4.2.4"},
     plug: "~> 1.1.4",
     cowboy: "~> 1.0.4",
     websocket_client: "~> 1.1.0",
-    httpoison: "~> 0.8.3",
-    exjsx: "~> 3.2.0"
+    tesla: "~> 0.2.1",
+    poison: "~> 2.2.0",
+    inflex: "~> 1.7.0",
   ]
 
 end

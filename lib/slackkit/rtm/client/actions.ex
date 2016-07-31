@@ -46,7 +46,7 @@ defmodule Slackkit.RTM.Client.Actions do
       text: text,
       channel: channel
     }
-      |> JSX.encode!
+      |> Poison.encode!
       |> send_raw(client)
   end
 
@@ -58,7 +58,7 @@ defmodule Slackkit.RTM.Client.Actions do
       type: "typing",
       channel: channel
     }
-      |> JSX.encode!
+      |> Poison.encode!
       |> send_raw(client)
   end
 
@@ -70,7 +70,7 @@ defmodule Slackkit.RTM.Client.Actions do
       type: "ping"
     }
       |> Dict.merge(payload)
-      |> JSX.encode!
+      |> Poison.encode!
       |> send_raw(client)
   end
 
@@ -89,11 +89,11 @@ defmodule Slackkit.RTM.Client.Actions do
     )
     case im_open do
       {:ok, response} ->
-        case JSX.decode!(response.body, [{:labels, :atom}]) do
-          %{ok: true, channel: %{id: id}} -> on_success.(id)
-          _ -> on_error.()
+        case Poison.decode(response.body, keys: :atoms) do
+          {:ok, %{ok: true, channel: %{id: id}}} -> on_success.(id)
+          {:error, reason} -> on_error.({Poison.Decode, reason})
         end
-      {:error, reason} -> on_error.(reason)
+      {:error, reason} -> on_error.({HTTPoison, reason})
     end
   end
 
