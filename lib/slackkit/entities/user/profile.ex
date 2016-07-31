@@ -1,7 +1,6 @@
 defmodule Slackkit.User.Profile do
 
-  # @derive [Poison.Encoder]
-  defstruct [
+  use Slackkit.Entity, [
     :avatar_hash,
     :email,
     :fields,
@@ -16,7 +15,5 @@ defmodule Slackkit.User.Profile do
     :image_192,
     :image_512,
   ]
-
-  def spec, do: %__MODULE__{}
 
 end

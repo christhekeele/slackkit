@@ -2,8 +2,7 @@ defmodule Slackkit.User do
 
   alias Slackkit.User.Profile
 
-  @derive [Poison.Encoder]
-  defstruct [
+  use Slackkit.Entity, [
     :id,
     :name,
     :color,
@@ -14,7 +13,6 @@ defmodule Slackkit.User do
     :tz_label,
     :tz_offset,
     :presence,
-    :profile,
     :is_admin,
     :is_owner,
     :is_restricted,
@@ -22,8 +20,9 @@ defmodule Slackkit.User do
     :has_2fa,
     :two_factor_type,
     :has_files,
+    profile: Profile.spec,
   ]
 
-  def spec, do: %__MODULE__{profile: Profile.spec}
+  do_serialization
 
 end

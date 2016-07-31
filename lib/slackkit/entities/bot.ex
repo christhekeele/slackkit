@@ -1,13 +1,12 @@
 defmodule Slackkit.Bot do
 
-  @derive [Poison.Encoder]
-  defstruct [
+  use Slackkit.Entity, [
     :id,
     :deleted,
     :name,
     :icons,
   ]
 
-  def spec, do: %__MODULE__{}
+  do_serialization
 
 end

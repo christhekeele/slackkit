@@ -1,4 +1,4 @@
-defmodule Slackkit.Channel do
+defmodule Slackkit.Group do
 
   alias Slackkit.Purpose
   alias Slackkit.Topic
@@ -9,16 +9,15 @@ defmodule Slackkit.Channel do
     :created,
     :creator,
     :is_archived,
-    :is_general,
+    :is_mpim,
     :members,
-    :is_member,
     :last_read,
     :latest,
     :unread_count,
     :unread_count_display,
     is_mpim: false,
-    is_group: false,
-    is_channel: true,
+    is_group: true,
+    is_channel: false,
     is_usergroup: false,
     topic: Topic.spec,
     purpose: Purpose.spec,

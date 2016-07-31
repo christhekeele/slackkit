@@ -22,6 +22,47 @@ defmodule Slackkit.Web do
   use Slackkit.Web.Channels.SetTopic
   use Slackkit.Web.Channels.Unarchive
 
+  use Slackkit.Web.Chat.Delete
+  use Slackkit.Web.Chat.MeMessage
+  use Slackkit.Web.Chat.PostMessage
+  use Slackkit.Web.Chat.Update
+
+  use Slackkit.Web.DND.EndDND
+  use Slackkit.Web.DND.EndSnooze
+  use Slackkit.Web.DND.Info
+  use Slackkit.Web.DND.SetSnooze
+  use Slackkit.Web.DND.TeamInfo
+
+  use Slackkit.Web.Emoji.List
+
+  use Slackkit.Web.Files.Comments.Add
+  use Slackkit.Web.Files.Comments.Delete
+  use Slackkit.Web.Files.Comments.Edit
+
+  use Slackkit.Web.Files.Delete
+  use Slackkit.Web.Files.Info
+  use Slackkit.Web.Files.List
+  use Slackkit.Web.Files.RevokePublicURL
+  use Slackkit.Web.Files.SharedPublicURL
+  use Slackkit.Web.Files.Upload
+
+  use Slackkit.Web.Groups.Archive
+  use Slackkit.Web.Groups.Close
+  use Slackkit.Web.Groups.Create
+  use Slackkit.Web.Groups.CreateChild
+  use Slackkit.Web.Groups.History
+  use Slackkit.Web.Groups.Info
+  use Slackkit.Web.Groups.Invite
+  use Slackkit.Web.Groups.Kick
+  use Slackkit.Web.Groups.Leave
+  use Slackkit.Web.Groups.List
+  use Slackkit.Web.Groups.Mark
+  use Slackkit.Web.Groups.Open
+  use Slackkit.Web.Groups.Rename
+  use Slackkit.Web.Groups.SetPurpose
+  use Slackkit.Web.Groups.SetTopic
+  use Slackkit.Web.Groups.Unarchive
+
   use Slackkit.Web.Users.List
 
   @doc """

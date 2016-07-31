@@ -10,7 +10,21 @@ defmodule Slackkit.Web.Endpoint do
   defmacro __using__(name) do
     quote location: :keep do
 
-      import Slackkit.Web.Endpoint
+      import unquote(__MODULE__)
+
+      alias Slackkit.Bot
+      alias Slackkit.Channel
+      alias Slackkit.File
+      alias Slackkit.File.Comment
+      alias Slackkit.Group
+      alias Slackkit.IM
+      alias Slackkit.Message
+      alias Slackkit.MPIM
+      alias Slackkit.Pagination
+      alias Slackkit.Purpose
+      alias Slackkit.Topic
+      alias Slackkit.User
+      alias Slackkit.Profile
 
       use Slackkit.Registry, :endpoints
 

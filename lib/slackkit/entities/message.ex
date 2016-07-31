@@ -1,7 +1,6 @@
 defmodule Slackkit.Message do
 
-  @derive [Poison.Encoder]
-  defstruct [
+  use Slackkit.Entity, [
     :type,
     :ts,
     :user,
@@ -22,7 +21,5 @@ defmodule Slackkit.Message do
     pinned_to: nil,
     reactions: [],
   ]
-
-  def spec, do: %__MODULE__{}
 
 end
