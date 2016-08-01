@@ -1,5 +1,7 @@
 defmodule Slackkit.Web.RTM.Start do
 
+  @moduledoc false
+
   use Slackkit.Web.Endpoint, "rtm.start"
 
   defresponse [

@@ -1,4 +1,5 @@
 defmodule Slackkit.Web.IM.History do
+  @moduledoc false
 
   use Slackkit.Web.Endpoint, "im.history"
 

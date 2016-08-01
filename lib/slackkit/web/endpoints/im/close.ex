@@ -1,4 +1,5 @@
 defmodule Slackkit.Web.IM.Close do
+  @moduledoc false
 
   use Slackkit.Web.Endpoint, "im.close"
 

@@ -1,6 +1,8 @@
 defmodule Slackkit.Registry do
+  @moduledoc false
 
   defmodule Registry do
+    @moduledoc false
     defmacro __before_compile__(_) do
       quote do
         # def unquote(Module.get_attribute(__CALLER__.module, :registry_name))() do

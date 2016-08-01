@@ -1,4 +1,5 @@
 defmodule Slackkit.Web.Endpoint do
+  @moduledoc false
 
   @base "https://slack.com/api/"
   def base, do: @base
@@ -33,6 +34,7 @@ defmodule Slackkit.Web.Endpoint do
       def method, do: @method
 
       defmodule Client do
+        @moduledoc false
         @url unquote(@base) <> unquote(name)
         def url, do: @url
 
@@ -46,7 +48,7 @@ defmodule Slackkit.Web.Endpoint do
       end
 
       def get(client, params \\ []) do
-        Client.get("", qs(client, params)) |> process
+        process client, Client.get("", qs(client, params))
       end
       defp qs(client, params \\ %{}) do
         params
@@ -56,16 +58,17 @@ defmodule Slackkit.Web.Endpoint do
       end
 
       def post(client, params \\ []) do
-        Client.post("", encoded(client, params)) |> process
+        process client, Client.post("", encoded(client, params))
       end
       defp encoded(client, params) do
         qs(client, params)
          |> URI.encode_query
       end
 
-      defp process(response) do
+      defp process(client, response) do
         response.body
          |> Poison.decode!(as: __MODULE__.Response.spec)
+         |> Map.put(:client, client)
          |> verify!
       end
 
@@ -73,18 +76,21 @@ defmodule Slackkit.Web.Endpoint do
         raise __MODULE__.SlackException, message
       end
 
-      defp verify!(response = %{warnings: string}) when binary_part(string, 1, -1) do
-        require Logger
-        string |> String.split(",") |> Enum.each(&(Logger.warn("#Slack Web API issued warning: #{&1}")))
+      defp verify!(response = %{warning: ""}) do
         response
       end
 
-      defp verify!(response), do: response
+      defp verify!(response = %{warning: string}) do
+        require Logger
+        string |> String.split(",") |> Enum.each(&(Logger.warn("Slack Web API issued warning: #{&1}")))
+        response
+      end
 
       def spec, do: %{}
       defoverridable [spec: 0]
 
       defmodule SlackException do
+        @moduledoc false
         defexception [:message]
 
         def exception(info) do
@@ -106,8 +112,9 @@ defmodule Slackkit.Web.Endpoint do
       def spec, do: %{unquote_splicing(Enum.filter(spec, &(is_tuple(&1))))}
 
       defmodule Response do
+        @moduledoc false
 
-        defstruct props ++ [:ok, error: nil, warnings: ""]
+        defstruct props ++ [:client, :ok, error: nil, warning: ""]
 
         def spec do
           %__MODULE__{unquote_splicing(Enum.filter(spec, &(is_tuple(&1))))}
