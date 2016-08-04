@@ -1,10 +1,12 @@
 defmodule Slackkit.Bot do
+  
+  alias Slackkit.Icon
 
   use Slackkit.Entity, [
     :id,
     :deleted,
     :name,
-    :icons,
+    icons: [Icon.spec]
   ]
 
   do_serialization

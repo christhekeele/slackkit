@@ -3,7 +3,7 @@ defmodule Slackkit.User.Profile do
   use Slackkit.Entity, [
     :avatar_hash,
     :email,
-    :fields,
+    :phone,
     :first_name,
     :last_name,
     :real_name,
@@ -14,6 +14,7 @@ defmodule Slackkit.User.Profile do
     :image_72,
     :image_192,
     :image_512,
+    fields: %{}
   ]
 
 end

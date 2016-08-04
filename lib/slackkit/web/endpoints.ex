@@ -84,13 +84,56 @@ defmodule Slackkit.Web.Endpoints do
       use Slackkit.Web.Pins.Add
       use Slackkit.Web.Pins.List
       use Slackkit.Web.Pins.Remove
-
-
-
+      
+      use Slackkit.Web.Reactions.Add
+      use Slackkit.Web.Reactions.Get
+      use Slackkit.Web.Reactions.List
+      use Slackkit.Web.Reactions.Remove
+      
+      use Slackkit.Web.Reminders.Add
+      use Slackkit.Web.Reminders.Complete
+      use Slackkit.Web.Reminders.Delete
+      use Slackkit.Web.Reminders.Info
+      use Slackkit.Web.Reminders.List
 
       use Slackkit.Web.RTM.Start
+      
+      use Slackkit.Web.Search.All
+      use Slackkit.Web.Search.Files
+      use Slackkit.Web.Search.Messages
 
+      use Slackkit.Web.Stars.Add
+      use Slackkit.Web.Stars.List
+      use Slackkit.Web.Stars.Remove
+      
+      use Slackkit.Web.Team.AccessLogs
+      use Slackkit.Web.Team.BillableInfo
+      use Slackkit.Web.Team.Info
+      use Slackkit.Web.Team.IntegrationLogs
+      
+      use Slackkit.Web.Team.Profile.Get
+      use Slackkit.Web.Team.Profile.Set
+      
+      use Slackkit.Web.UserGroups.Create
+      use Slackkit.Web.UserGroups.Disable
+      use Slackkit.Web.UserGroups.Enable
+      use Slackkit.Web.UserGroups.List
+      use Slackkit.Web.UserGroups.Update
+      
+      use Slackkit.Web.UserGroups.Users.List
+      use Slackkit.Web.UserGroups.Users.Update
+      
+      use Slackkit.Web.Users.GetPresence
+      use Slackkit.Web.Users.Identity
+      use Slackkit.Web.Users.Info
       use Slackkit.Web.Users.List
+      use Slackkit.Web.Users.SetActive
+      use Slackkit.Web.Users.SetPresence
+      
+      use Slackkit.Web.Users.Profile.Get
+      use Slackkit.Web.Users.Profile.Set
+      
+      
 
     end
   end

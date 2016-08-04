@@ -16,17 +16,21 @@ defmodule Slackkit.Web.Endpoint do
       alias Slackkit.Bot
       alias Slackkit.Channel
       alias Slackkit.File
-      alias Slackkit.File.Comment
       alias Slackkit.Group
+      alias Slackkit.Icon
+      alias Slackkit.Integration
       alias Slackkit.IM
+      alias Slackkit.Login
       alias Slackkit.Message
       alias Slackkit.MPIM
       alias Slackkit.Pagination
       alias Slackkit.Purpose
+      alias Slackkit.Reaction
+      alias Slackkit.Reminder
+      alias Slackkit.Search
       alias Slackkit.Team
       alias Slackkit.Topic
       alias Slackkit.User
-      alias Slackkit.Profile
 
       use Slackkit.Registry, :endpoints
 
@@ -41,7 +45,7 @@ defmodule Slackkit.Web.Endpoint do
         use Tesla.Builder
         plug Tesla.Middleware.BaseUrl, @url
         plug Tesla.Middleware.Headers, %{
-          'Content-Type' => 'application/x-www-form-urlencoded; charset=utf8',
+          'Content-Type' => 'application/x-www-form-urlencoded',
         }
 
         adapter Tesla.Adapter.Ibrowse

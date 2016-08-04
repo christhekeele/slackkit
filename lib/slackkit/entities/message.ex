@@ -1,4 +1,6 @@
 defmodule Slackkit.Message do
+  
+  alias Slackkit.Reaction
 
   use Slackkit.Entity, [
     :type,
@@ -19,7 +21,7 @@ defmodule Slackkit.Message do
     deleted_ts: nil,
 
     pinned_to: nil,
-    reactions: [],
+    reactions: [Reaction.spec],
   ]
 
 end

@@ -1,4 +1,4 @@
-defmodule Slackkit.UserGroup do
+defmodule Slackkit.User.Group do
 
   use Slackkit.Entity, [
     :id,
